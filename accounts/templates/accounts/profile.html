@@ -1,0 +1,9 @@
+{% extends 'base.html' %}
+{% block content %}
+  <h2>Профіль</h2>
+  <p>Ім'я користувача: {{ user.username }}</p>
+  <p>Email: {{ user.email }}</p>
+  <p>Ім’я: {{ user.first_name }}</p>
+  <p>Прізвище: {{ user.last_name }}</p>
+  <a href="{% url 'edit_profile' %}">Редагувати профіль</a>
+{% endblock %}

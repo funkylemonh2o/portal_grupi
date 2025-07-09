@@ -46,3 +46,8 @@ def edit_profile_view(request):
     else:
         form = EditProfileForm(instance=request.user)
     return render(request, 'accounts/edit_profile.html', {'form': form})
+
+def custom_403_view(request, exeption=None):
+    return render(
+        request, "403.html", {"message": "Особливе повідомлення!"}, status=403
+    )

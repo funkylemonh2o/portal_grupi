@@ -1,10 +1,129 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="uk">
 <head>
+    <link rel="icon" href="https://www.flaticon.com/free-icons/portal" type="image/x-icon">
     <meta charset="UTF-8">
-    <title>Title</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Portal_grupi — Footer</title>
+<style>
+    html, body {
+        height: 100%;
+        margin: 0;
+        padding: 0;
+        background-color: #eef3ff;
+        font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        display: flex;
+        flex-direction: column;
+    }
+
+    .page-content {
+        flex: 1; /* розтягує контент */
+    }
+
+    footer {
+        background: linear-gradient(135deg, #1d475c, #0d2e3f);
+        color: white;
+        padding: 2rem 2rem 2.5rem;
+        border-top-left-radius: 20px;
+        border-top-right-radius: 20px;
+        box-shadow: 0 -4px 12px rgba(0, 0, 0, 0.15);
+    }
+
+    .footer-container {
+        max-width: 1200px;
+        margin: 0 auto;
+        display: flex;
+        flex-wrap: wrap;
+        justify-content: space-between;
+        gap: 2rem;
+    }
+
+    .footer-section {
+        flex: 1 1 200px;
+    }
+
+    .footer-section h3 {
+        margin-bottom: 1rem;
+        font-size: 1.2rem;
+        border-bottom: 1px solid rgba(255, 255, 255, 0.2);
+        padding-bottom: 0.5rem;
+    }
+
+    .footer-section ul {
+        list-style: none;
+        padding: 0;
+        margin: 0;
+    }
+
+    .footer-section ul li {
+        margin-bottom: 0.5rem;
+    }
+
+    .footer-section ul li a {
+        color: #cfdfea;
+        text-decoration: none;
+        transition: color 0.2s;
+    }
+
+    .footer-section ul li a:hover {
+        color: #ffffff;
+        text-decoration: underline;
+    }
+
+    .footer-bottom {
+        margin-top: 2rem;
+        text-align: center;
+        font-size: 0.9rem;
+        color: #cfdfea;
+    }
+
+    .footer_head {
+      display: flex;
+      align-items: center;
+    }
+</style>
 </head>
 <body>
+
+    <div class="page-content">
+        {% block content %}
+        {% endblock %}
+    </div>
+
+    <!-- FOOTER -->
+    <footer>
+        <div class="footer-container">
+            <div class="footer-section">
+                <h3>Навігація</h3>
+                <ul>
+                    <li><a href="{% url 'main_page' %}">Головна</a></li>
+                    <li><a href="#">Про нас</a></li>
+                    <li><a href="#">Контакти</a></li>
+                    <li><a href="#">Допомога</a></li>
+                </ul>
+            </div>
+
+            <div class="footer-section">
+                <h3>Сервіси</h3>
+                <ul>
+                    <li><a href="#">Форум</a></li>
+                    <li><a href="#">Щоденник</a></li>
+                    <li><a href="#">Портфоліо</a></li>
+                    <li><a href="#">Опитування</a></li>
+                </ul>
+            </div>
+
+            <div class="footer-section">
+                <h3>Контактна інформація</h3>
+                <p>Email: TarasNapishe@gmail.com</p>
+                <p>Телефон: +380 90 911 1488</p>
+                <p>Адреса: у нас вдома</p>
+            </div>
+        </div>
+        <div class="footer-bottom">
+            &copy; 2025 Portal_grupi. Усі права захищено.
+        </div>
+    </footer>
 
 </body>
 </html>

@@ -1,0 +1,17 @@
+<h1>Оголошення</h1>
+{% for a in announcements %}
+    <div>
+        <h2>{{ a.title }}</h2>
+        <p>{{ a.content }}</p>
+        <small>Створено {{ a.created_at }} — {{ a.created_by }}</small>
+        {% if user.is_staff %}
+            <p>
+                <a href="{% url 'announcement_edit' a.pk %}">Редагувати</a> |
+                <a href="{% url 'announcement_delete' a.pk %}">Видалити</a>
+            </p>
+        {% endif %}
+    </div>
+{% endfor %}
+{% if user.is_staff %}
+    <a href="{% url 'announcement_create' %}">+ Додати оголошення</a>
+{% endif %}

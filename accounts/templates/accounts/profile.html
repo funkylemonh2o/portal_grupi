@@ -1,0 +1,46 @@
+<style>
+  .profile-container {
+    max-width: 820px;
+    margin: 2rem auto;
+    padding: 2rem;
+    background-color: white;
+    border-radius: 8px;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+}
+
+.profile-container h2 {
+    color: #1d475c;
+    margin-bottom: 1.5rem;
+}
+
+.submit-button {
+    background-color: #1d475c;
+    color: white;
+    padding: 0.75rem;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+    text-decoration: none;
+}
+
+  .submit-button:hover {
+    background-color: #0d2e3f;
+  }
+</style>
+
+{% extends 'base.html' %}
+
+{% block content %}
+<div class="profile-container">
+  <h2>Профіль</h2>
+  <p>Ім'я користувача: {{ user.username }}</p>
+  <p>Статус: {{ user.role }}</p>
+  <p>Email: {{ user.email }}</p>
+  <p>Ім’я: {{ user.first_name }}</p>
+  <p>Прізвище: {{ user.last_name }}</p>
+  <a class="submit-button" href="{% url 'edit_profile' %}">Редагувати профіль</a>
+</div>
+
+{% endblock %}
+{% include 'base_bottom.html' %}

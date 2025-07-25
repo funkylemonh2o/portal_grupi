@@ -19,10 +19,12 @@ from django.urls import path, include
 from accounts.views import main_view
 from django.conf.urls.static import static
 from django.conf import settings
+from event_calendar.views import event_calendar_view
 
 urlpatterns = [
     path('admin/', admin.site.urls),
     path('', main_view, name='main_page'),
     path('accounts/', include('accounts.urls')),
     path('announcements/', include('announcements.urls')),
+    path('event_calendar/', event_calendar_view, name='event_calendar'),
 ] + static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)

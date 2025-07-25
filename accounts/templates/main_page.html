@@ -3,9 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <title>{% block title %}Group portal{% endblock %}</title>
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.6/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-4Q6Gf2aSP4eDXB8Miphtr37CMZZQ5oXLH2yaXMJ2w8e2ZtHTl7GptT4jmndRuHDT" crossorigin="anonymous">
-    {% load static %}
-    <link rel="stylesheet" type="text/css" href="{% static 'css/style.css' %}">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.6/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-rbsA2VBKQhggwzxH7pPCaAqO46MgnOM80zW1RWuH61DGLwZJEdK2Kadq2F9CUG65" crossorigin="anonymous">
     <style>
         html, body {
             height: 100%;
@@ -30,64 +28,293 @@
             border-radius: 8px;
             box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
             display: flex;
+            flex-wrap: wrap;
+            justify-content: space-around;
+            align-items: flex-start;
+            gap: 20px;
         }
 
         .board-content {
+            margin-bottom: 20px;
             width: 30%;
             height: 370px;
-            border-radius: 4px;
-            background-color: #eef3ff;
-            padding: 1rem;
-        }
-
-        .carousel-box {
-            width: 70%;
-            height: 370px;
-            border-radius: 4px;
-            background-color: #eef3ff;
-            padding: 1rem;
-            margin-left: 1rem;
-        }
-
-        .carousel{
-            overflow-x: scroll;
-            scroll-snap-tepe: x mandatory;
-
-        }
-
-        .creators{
-            scroll-snap-align: center;
             background-color: white;
-            height: 90%;
-            width: 20%
-            margin: 1rem;
+            border: 2px solid #ddd;
+            border-radius: 10px;
+            padding: 20px;
+        }
+
+        .developers-section {
+            width: 65%;
+            padding: 1rem;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+        }
+
+        .developers-grid {
+            display: flex;
+            overflow-x: auto;
+            gap: 20px;
+            width: 100%;
+            margin-bottom: 20px;
+            padding-bottom: 10px;
+        }
+
+        .developer-card {
+            background-color: white;
+            border: 2px solid #ddd;
+            border-radius: 10px;
+            padding: 20px;
+            text-align: center;
+            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+            flex-shrink: 0;
+            width: 200px;
+        }
+
+        .developer-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 4px 16px rgba(0, 0, 0, 0.15);
+        }
+
+        .developer-photo {
+            width: 80px;
+            height: 80px;
+            border-radius: 50%;
+            background-color: #f0f0f0;
+            border: 3px solid #ddd;
+            margin: 0 auto 15px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 24px;
+            color: #999;
+        }
+
+        .developer-name {
+            font-weight: bold;
+            font-size: 16px;
+            color: #333;
+            margin-bottom: 8px;
+        }
+
+        .developer-age {
+            font-size: 14px;
+            color: #333;
+            margin-bottom: 15px;
+        }
+
+        .developer-link {
+            display: inline-block;
+            background-color: #1d475c;
+            color: white;
+            padding: 8px 16px;
+            border-radius: 5px;
+            text-decoration: none;
+            font-size: 14px;
+            transition: background-color 0.3s ease;
+        }
+
+        .developer-link:hover {
+            background-color: #0056b3;
+            color: white;
+            text-decoration: none;
+        }
+
+        .developers-title {
+            width: 100%;
+            text-align: center;
+            font-weight: bold;
+            font-size: 18px;
+            color: #333;
+            padding: 15px 0;
+            border-top: 3px solid #000;
+            margin-top: 10px;
+        }
+
+        @media (max-width: 768px) {
+            .board {
+                flex-direction: column;
+            }
+
+            .board-content,
+            .developers-section {
+                width: 100%;
+                margin-bottom: 20px;
+            }
+
+            .developers-grid {
+                /* grid-template-columns: repeat(auto-fit, minmax(150px, 1fr)); */
+                flex-wrap: nowrap;
+                justify-content: flex-start;
+            }
+            .developer-card {
+                width: 180px;
+            }
+        }
+
+        .quote-block {
+            background-color: #e6f2ff;
+            padding: 15px;
+            border-radius: 8px;
+            font-style: italic;
+            color: #555;
         }
     </style>
+    {% load static %}
+
 </head>
 <body>
     {% include 'base_head.html' %}
 
-    <main class="page-content">
+    <div class="page-content">
         <div class="board">
             <div class="board-content">
                 {% if request.user.role == 'admin' %}
-                  <h4>Вітаю, адміністраторе {{request.user.username}}!</h4>
+                    <h4>Вітаю, адміністраторе {{request.user.username}}!</h4>
                 {% elif request.user.role == 'moderator' %}
-                  <h4>Вітаю, модераторе!</h4>
+                    <h4>Вітаю, модераторе!</h4>
                 {% else %}
-                  <h4>Вітаю користувачу!</h4>
+                    <h4>Вітаю користувачу!</h4>
                 {% endif %}
+                <p>Раді бачити вас знову на нашому порталі.</p>
+                <div class="quote-block">
+                    <p> Цитата:</p>
+                    <p id="random-quote">Завантаження цитати...</p>
+                </div>
             </div>
 
-            <div class="carousel-box">
-                <div class="carousel">
-                    <div class="creators"></div>
+            <div class="developers-section">
+                <div class="developers-grid">
+                    <div class="developer-card">
+                        <div class="developer-photo">👤</div>
+                        <div class="developer-name">Ім'я Прізвище</div>
+                        <div class="developer-age">Вік: #</div>
+                        <a href="#" class="developer-link">Більше інформації</a>
+                    </div>
+
+                    <div class="developer-card">
+                        <div class="developer-photo">👤</div>
+                        <div class="developer-name">Ім'я Прізвище</div>
+                        <div class="developer-age">Вік: #</div>
+                        <a href="#" class="developer-link">Більше інформації</a>
+                    </div>
+
+                    <div class="developer-card">
+                        <img src="{% static 'img/kit.png' %}" class="developer-photo">
+                        <div class="developer-name">Луцяк Дмитро</div>
+                        <div class="developer-age">Вік: 16</div>
+                        <a href="#" class="developer-link">Більше інформації</a>
+                    </div>
+
+                    <div class="developer-card">
+                        <div class="developer-photo">👤</div>
+                        <div class="developer-name">Ім'я Прізвище</div>
+                        <div class="developer-age">Вік: #</div>
+                        <a href="#" class="developer-link">Більше інформації</a>
+                    </div>
+
+                    <div class="developer-card">
+                        <div class="developer-photo">👤</div>
+                        <div class="developer-name">Ім'я Прізвище</div>
+                        <div class="developer-age">Вік: #</div>
+                        <a href="#" class="developer-link">Більше інформації</a>
+                    </div>
+                </div>
+
+                <div class="developers-title">
+                    Група розробників
                 </div>
             </div>
         </div>
-    </main>
+    </div>
 
     {% include 'base_bottom.html' %}
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.6/dist/js/bootstrap.bundle.min.js" integrity="sha384-YvpcrYf0tY3lHB60NNkmXc5s9fDVZLESaAA55NDzOxhy9GkcIdslK1eN7N6jIeHz" crossorigin="anonymous"></script>
+    <script>
+        const quotes = [
+            "Життя - це те, що відбувається з тобою, поки ти будуєш інші плани.",
+            "Єдиний спосіб зробити велику роботу - це любити те, що ти робиш.",
+            "Майбутнє належить тим, хто вірить у красу своїх мрій.",
+            "Логіка приведе вас від А до Б. Уява приведе вас куди завгодно.",
+            "Не бійтеся досконалості, вам її ніколи не досягти.",
+            "Успіх - це не ключ до щастя. Щастя - це ключ до успіху. Якщо ви любите те, що робите, ви будете успішними.",
+            "Навчання ніколи не виснажує розум.",
+            "Єдине, що стоїть між вами і вашою мрією, - це воля спробувати і віра в те, що це дійсно можливо.",
+            "Немає нічого неможливого, слово само говорить: 'Я можливий!'",
+            "Вірте, що ви можете, і ви вже на півдорозі.",
+            "Кава - це рідина, яка перетворює 'Доброго ранку' на 'Добрий ранок!'",
+            "Програміст - це людина, яка вирішує проблеми, про які ви не знали, способами, які ви не розумієте.",
+            "Життя занадто коротке, щоб пити погану каву.",
+            "Іноді найкращий код - це той, який ви не написали.",
+            "Помилки - це докази того, що ви намагаєтеся.",
+            "Кожен експерт колись був початківцем.",
+            "Не всі, хто блукає, загубилися.",
+            "Якщо ви думаєте, що освіта дорога, спробуйте невігластво.",
+            "Мрії не мають терміну придатності.",
+            "Успіх - це сума малих зусиль, що повторюються день у день.",
+            "Єдиний спосіб зробити велику роботу - це любити те, що ти робиш.",
+            "Ваш час обмежений, не витрачайте його, живучи чужим життям.",
+            "Інновація відрізняє лідера від послідовника.",
+            "Життя - це 10% того, що з вами відбувається, і 90% того, як ви на це реагуєте.",
+            "Не чекайте. Час ніколи не буде ідеальним.",
+            "Щоб досягти успіху, ваше бажання успіху має бути більшим за ваш страх невдачі.",
+            "Я не зазнав невдачі. Я просто знайшов 10 000 способів, які не працюють.",
+            "Єдиний спосіб зробити велику роботу - це любити те, що ти робиш.",
+            "Вірте, що ви можете, і ви вже на півдорозі.",
+            "Успіх - це не остаточний, невдача - це не смертельний: це мужність продовжувати, що має значення.",
+            "Ваш час обмежений, не витрачайте його, живучи чужим життям.",
+            "Майбутнє належить тим, хто вірить у красу своїх мрій.",
+            "Логіка приведе вас від А до Б. Уява приведе вас куди завгодно.",
+            "Не бійтеся досконалості, вам її ніколи не досягти.",
+            "Успіх - це не ключ до щастя. Щастя - це ключ до успіху. Якщо ви любите те, що робите, ви будете успішними.",
+            "Навчання ніколи не виснажує розум.",
+            "Єдине, що стоїть між вами і вашою мрією, - це воля спробувати і віра в те, що це дійсно можливо.",
+            "Немає нічого неможливого, слово само говорить: 'Я можливий!'",
+            "Вірте, що ви можете, і ви вже на півдорозі.",
+            "Якщо довго дивитись у холодильник, хтось таки відповість.",
+            "Не хвилюйся, якщо план А не спрацює. У алфавіті ще 32 літери.",
+            "Я не втратив контроль. Я просто керую з дивана.",
+            "Коли нічого не очікуєш — сюрпризів більше!",
+            "У кожного є план… поки не закінчився Wi-Fi.",
+            "«Ранок — це просто змова будильників».",
+            "В моєму житті все під контролем. Особливо хаос.",
+            "Якщо щось не виходить — з’їж тістечко. Це універсальна порада.",
+            "Не відкладай на завтра те, що можна відкласти на післязавтра.",
+            "Сон — єдине, в чому я професіонал.",
+            "Знання — сила. Але меми — ефективніші.",
+            "Розумний той, хто не сперечається з чайником.",
+            "Якщо ти читаєш це — значить, ще живий. Вітаю!",
+            "«Давай почнемо з понеділка» — історія моєї невдачі.",
+            "Мій улюблений вид спорту — перевірка холодильника.",
+            "Ідеальних людей не буває. Але я намагаюсь.",
+            "Хаос — мій друг. Ми давно знайомі.",
+            "Інтернет — це пастка. Але весела.",
+            "Ситий той — хто поїв.",
+            "Горіла хата гори сарай.",
+        ];
+
+        function getRandomQuote() {
+            const randomIndex = Math.floor(Math.random() * quotes.length);
+            return quotes[randomIndex];
+        }
+
+        function displayRandomQuote() {
+            const quoteElement = document.getElementById("random-quote");
+            if (quoteElement) {
+                quoteElement.textContent = getRandomQuote();
+            }
+        }
+
+        document.addEventListener("DOMContentLoaded", function() {
+            displayRandomQuote();
+        });
+
+        // Оновлення цитати кожні 5 хвилин (опціонально)
+        setInterval(displayRandomQuote, 300000);
+    </script>
 
 </body>
 </html>
+

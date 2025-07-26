@@ -9,6 +9,5 @@ class Event(models.Model):
     def __str__(self):
         return f"Подія в {self.location}. Дата: {self.date}"
     class Meta:
-        verbose_name = "Event"
-        verbose_name_plural = "Events"
+        verbose_name = "Events"
         ordering = ["date"]

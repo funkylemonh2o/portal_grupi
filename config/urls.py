@@ -26,5 +26,5 @@ urlpatterns = [
     path('', main_view, name='main_page'),
     path('accounts/', include('accounts.urls')),
     path('announcements/', include('announcements.urls')),
-    path('event_calendar/', event_calendar_view, name='event_calendar'),
+    path('event_calendar/', include('event_calendar.urls')),
 ] + static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)

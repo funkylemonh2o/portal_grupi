@@ -1,17 +1,127 @@
-<h1>Оголошення</h1>
-{% for a in announcements %}
-    <div>
-        <h2>{{ a.title }}</h2>
-        <p>{{ a.content }}</p>
-        <small>Створено {{ a.created_at }} — {{ a.created_by }}</small>
-        {% if user.is_staff %}
-            <p>
-                <a href="{% url 'announcement_edit' a.pk %}">Редагувати</a> |
-                <a href="{% url 'announcement_delete' a.pk %}">Видалити</a>
-            </p>
-        {% endif %}
+{% extends 'base.html' %}
+{% load static %}
+
+{% block content %}
+<style>
+    .board {
+        width: 90%;
+        margin: 1rem auto;
+        padding: 1rem;
+        background-color: white;
+        border-radius: 8px;
+        box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+        display: flex;
+        flex-wrap: wrap;
+        align-items: left;
+        gap: 15px;
+    }
+
+    .board-content {
+        display: flex;
+        flex-wrap: wrap;
+        align-items: center;
+        gap: 20px;
+    }
+
+    .announcement-card {
+        background-color: white;
+        border: 2px solid #ddd;
+        border-radius: 10px;
+        padding: 20px;
+        width: 100%;
+        margin-bottom: 5px;
+        box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+    }
+
+    .announcement-card h2 {
+        font-size: 20px;
+        font-weight: bold;
+        color: #1d475c;
+        margin-bottom: 10px;
+    }
+
+    .announcement-card p {
+        font-size: 16px;
+        color: #333;
+    }
+
+    .announcement-meta {
+        font-size: 14px;
+        color: #777;
+        margin-top: 10px;
+    }
+
+    .announcement-actions {
+        margin-top: 10px;
+    }
+
+    .announcement-actions a {
+        font-size: 14px;
+        color: #0056b3;
+        margin-right: 10px;
+        text-decoration: none;
+    }
+
+    .announcement-actions a:hover {
+        text-decoration: underline;
+    }
+
+    .add-announcement-btn {
+        display: inline-block;
+        margin-top: 20px;
+        padding: 10px 15px;
+        background-color: #1d475c;
+        color: white;
+        border-radius: 6px;
+        text-decoration: none;
+        font-weight: bold;
+        transition: background-color 0.3s ease;
+    }
+
+    .add-announcement-btn:hover {
+        background-color: #003d66;
+    }
+
+    @media (max-width: 768px) {
+        .announcement-card {
+            padding: 15px;
+        }
+    }
+</style>
+
+<div class="page-content">
+    <div class="board">
+        <div class="board-content">
+            <h1 style="color: #1d475c;">Оголошення</h1>
+
+            {% if user.is_staff %}
+                <a href="{% url 'announcement_create' %}" class="add-announcement-btn">+ Додати оголошення</a>
+            {% endif %}
+        </div>
+
+            {% for a in announcements %}
+                <div class="announcement-card">
+                    <h2>{{ a.title }}</h2>
+                    <p>{{ a.content }}</p>
+                    <div class="announcement-meta">
+                        Створено {{ a.created_at|date:"d.m.Y H:i" }} — {{ a.created_by }}
+                    </div>
+
+                    <div class="announcement-actions">
+                        {% if user.is_staff %}
+                            <div class="announcement-actions">
+                                <a href="{% url 'announcement_edit' a.pk %}">Редагувати</a> |
+                                <a href="{% url 'announcement_delete' a.pk %}" onclick="return confirm('Ви впевнені, що хочете видалити це оголошення?');">Видалити</a>
+                            </div>
+                        {% endif %}
+                    </div>
+                </div>
+            {% empty %}
+                <p>Наразі немає жодного оголошення.</p>
+            {% endfor %}
+        </div>
     </div>
-{% endfor %}
-{% if user.is_staff %}
-    <a href="{% url 'announcement_create' %}">+ Додати оголошення</a>
-{% endif %}
+</div>
+
+
+{% endblock %}

@@ -203,7 +203,7 @@
                 <a href="{% url 'main_page' %}">На головну</a>
                 <button onclick="toggleTheme()" class="dropbtnm">Змінити тему</button>
                 <a href="{% url 'profile' %}">Профіль</a>
-                <a href="{% url 'logout' %}">Вийти</a>
+                <a href="{% url 'logout'%}" onclick="return confirm('Ви впевнені, що хочете вийти?');">Вийти</a>
             </div>
         {% else %}
             <div class="nav-links">

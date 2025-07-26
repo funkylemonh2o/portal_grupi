@@ -1,8 +1,86 @@
-<!-- templates/announcements/form.html -->
-<h1>Форма оголошення</h1>
-<form method="post">
-  {% csrf_token %}
-  {{ form.as_p }}
-  <button type="submit">Зберегти</button>
-</form>
-<a href="{% url 'announcement_list' %}">Назад</a>
+{% extends 'base.html' %}
+{% load static %}
+
+{% block content %}
+<style>
+    .form-container {
+        background-color: white;
+        border: 2px solid #ddd;
+        border-radius: 10px;
+        padding: 30px;
+        max-width: 600px;
+        margin: 50px auto;
+        box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+    }
+
+    .form-container h1 {
+        font-size: 24px;
+        color: #1d475c;
+        margin-bottom: 20px;
+        text-align: center;
+    }
+
+    .form-container form {
+        display: flex;
+        flex-direction: column;
+    }
+
+    .form-container label {
+        font-weight: bold;
+        color: #333;
+        margin-top: 15px;
+        margin-bottom: 5px;
+    }
+
+    .form-container input[type="text"],
+    .form-container textarea,
+    .form-container select {
+        padding: 10px;
+        font-size: 16px;
+        border: 1px solid #ccc;
+        border-radius: 5px;
+        background-color: #f9f9f9;
+    }
+
+    .form-container button {
+        margin-top: 25px;
+        padding: 10px 15px;
+        background-color: #1d475c;
+        color: white;
+        border: none;
+        border-radius: 6px;
+        font-size: 16px;
+        font-weight: bold;
+        cursor: pointer;
+        transition: background-color 0.3s ease;
+    }
+
+    .form-container button:hover {
+        background-color: #003d66;
+    }
+
+    .form-container .back-link {
+        display: inline-block;
+        margin-top: 20px;
+        text-align: center;
+        font-size: 14px;
+        color: #0056b3;
+        text-decoration: none;
+    }
+
+    .form-container .back-link:hover {
+        text-decoration: underline;
+    }
+
+</style>
+
+<div class="form-container">
+    <h1>Форма оголошення</h1>
+    <form method="post">
+        {% csrf_token %}
+        {{ form.as_p }}
+        <button type="submit">Зберегти</button>
+    </form>
+    <a href="{% url 'announcement_list' %}" class="back-link">← Назад до списку оголошень</a>
+</div>
+{% endblock %}

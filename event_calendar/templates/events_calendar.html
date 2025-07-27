@@ -77,23 +77,23 @@
 </style>
 
 <div class="page-content">
-    <h1>Upcoming Events</h1>
+    <h1>Майбутні події</h1>
     <ul class="event-list">
         {% for event in events %}
             <li class="event-item">
                 <div class="event-text">
                     <h2>{{ event.name }}</h2>
-                    <p><strong>Location:</strong> {{ event.location }}</p>
-                    <p><strong>Date:</strong> {{ event.date|date:"d.m.Y, H:i" }}</p>
+                    <p><strong>Опис:</strong> {{ event.location }}</p>
+                    <p><strong>Дата:</strong> {{ event.date|date:"d.m.Y, H:i" }}</p>
                 </div>
-                {% if event.image_url %}
+                {% if event.image %}
                 <div class="event-image">
-                    <img src="{{ event.image_url }}" alt="Event image">
+                    <img src="{{ event.image.url }}" alt="Event image">
                 </div>
                 {% endif %}
             </li>
         {% empty %}
-            <li style="text-align:center;">No events available.</li>
+            <li style="text-align:center;">Жодних подій немає.</li>
         {% endfor %}
     </ul>
 </div>

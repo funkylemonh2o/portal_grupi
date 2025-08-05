@@ -28,7 +28,7 @@ SECRET_KEY = 'django-insecure-b2k5#r^x&98_4gh=e6$7m=6i-xa5x)0l#3p!so!-ky0ffj80vc
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = []
+ALLOWED_HOSTS = ['8000-iy8pgcifsuqdv09zqar6f-f74376f5.manus.computer', 'localhost', '127.0.0.1']
 
 
 # Application definition
@@ -42,7 +42,8 @@ INSTALLED_APPS = [
     'django.contrib.staticfiles',
     'accounts',
     'announcements',
-    'event_calendar'
+    'event_calendar',
+    'polls'
 ]
 
 MIDDLEWARE = [

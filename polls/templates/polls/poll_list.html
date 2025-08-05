@@ -1,8 +1,84 @@
-<h2>Опитування</h2>
-<ul>
-  {% for poll in polls %}
-    <li>
-      <a href="{% url 'poll_detail' poll.id %}">{{ poll.title }}</a>
-    </li>
-  {% endfor %}
-</ul>
+{% extends 'base.html' %}
+{% load static %}
+
+{% block content %}
+<div class="page-content">
+    <div class="board">
+        <div class="polls-block">
+            <h2 class="block-title">Опитування</h2>
+            {% if polls %}
+                <ul class="polls-list">
+                    {% for poll in polls %}
+                        <li class="poll-item">
+                            <a href="{% url 'poll_detail' poll.id %}" class="poll-link">{{ poll.title }}</a>
+                        </li>
+                    {% endfor %}
+                </ul>
+            {% else %}
+                <div class="no-content">Поки що немає опитувань</div>
+            {% endif %}
+            <button class="back-button" onclick="history.back()">⬅ Назад</button>
+        </div>
+    </div>
+</div>
+
+<style>
+    .polls-block {
+        width: 80%;
+        background: white;
+        border: 2px solid #ddd;
+        border-radius: 10px;
+        padding: 20px;
+        margin: 0 auto;
+        box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+    }
+
+    .polls-list {
+        list-style: none;
+        padding: 0;
+        margin: 0;
+    }
+
+    .poll-item {
+        margin-bottom: 12px;
+        padding: 12px;
+        background: #f8f9fa;
+        border: 1px solid #e9ecef;
+        border-radius: 8px;
+        transition: transform 0.2s ease, box-shadow 0.2s ease;
+    }
+
+    .poll-item:hover {
+        transform: translateY(-2px);
+        box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+    }
+
+    .poll-link {
+        text-decoration: none;
+        font-weight: bold;
+        color: #1d475c;
+        font-size: 16px;
+    }
+
+    .poll-link:hover {
+        color: #0056b3;
+    }
+
+    .back-button {
+        margin-top: 15px;
+        display: inline-block;
+        background-color: #6c757d;
+        color: white;
+        padding: 8px 16px;
+        border-radius: 5px;
+        border: none;
+        font-size: 14px;
+        cursor: pointer;
+        transition: background-color 0.3s ease;
+    }
+
+    .back-button:hover {
+        background-color: #5a6268;
+    }
+</style>
+{% endblock %}

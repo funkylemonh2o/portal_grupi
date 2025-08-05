@@ -36,6 +36,7 @@
         box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
         gap: 20px;
         flex-wrap: wrap;
+        position: relative;
     }
 
     .event-text {
@@ -63,6 +64,21 @@
         border: 2px solid #ddd;
     }
 
+    .event-actions {
+        margin-top: 10px;
+    }
+
+    .event-actions a {
+        font-size: 14px;
+        color: #0056b3;
+        margin-right: 10px;
+        text-decoration: none;
+    }
+
+    .event-actions a:hover {
+        text-decoration: underline;
+    }
+
     @media (max-width: 768px) {
         .event-item {
             flex-direction: column;
@@ -85,7 +101,18 @@
                     <h2>{{ event.name }}</h2>
                     <p><strong>Опис:</strong> {{ event.location }}</p>
                     <p><strong>Дата:</strong> {{ event.date|date:"d.m.Y, H:i" }}</p>
+
+                    {% if user.is_staff %}
+                    <form method="post" action="{% url 'event_delete' event.pk %}" style="display:inline;">
+                        {% csrf_token %}
+                        <button type="submit" style="background:none; border:none; padding:0; color:#1d475c; cursor:pointer; font-size:14px;"
+                            onclick="return confirm('Ви впевнені, що хочете видалити цю подію?');">
+                            Видалити
+                        </button>
+                    </form>
+                    {% endif %}
                 </div>
+
                 {% if event.image %}
                 <div class="event-image">
                     <img src="{{ event.image.url }}" alt="Event image">

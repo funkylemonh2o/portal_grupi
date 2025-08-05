@@ -1,14 +1,111 @@
-<h2>{{ poll.title }}</h2>
-<form method="post" action="{% url 'poll_vote' poll.id %}">
-  {% csrf_token %}
-  {% for question in questions %}
-    <p><strong>{{ question.text }}</strong></p>
-    {% for choice in question.choices.all %}
-      <label>
-        <input type="radio" name="question_{{ question.id }}" value="{{ choice.id }}">
-        {{ choice.text }}
-      </label><br>
-    {% endfor %}
-  {% endfor %}
-  <button type="submit">Голосувати</button>
-</form>
+{% extends 'base.html' %}
+{% load static %}
+
+{% block content %}
+<div class="page-content">
+    <div class="board">
+        <div class="polls-block">
+            <h2 class="block-title">{{ poll.title }}</h2>
+            <form id="vote-form" method="post" action="{% url 'poll_vote' poll.id %}">
+                {% csrf_token %}
+                {% for question in questions %}
+                    <div class="question-block">
+                        <p class="question-text">{{ question.text }}</p>
+                        {% for choice in question.choices.all %}
+                            <label class="choice-label">
+                                <input type="radio" name="question_{{ question.id }}" value="{{ choice.id }}" class="choice-radio">
+                                {{ choice.text }}
+                            </label><br>
+                        {% endfor %}
+                    </div>
+                {% endfor %}
+                <button type="submit" id="vote-button" class="vote-button" disabled>Голосувати</button>
+            </form>
+            <button class="back-button" onclick="history.back()">⬅ Назад</button>
+        </div>
+    </div>
+</div>
+
+<style>
+    .polls-block {
+        width: 70%;
+        background: white;
+        border: 2px solid #ddd;
+        border-radius: 10px;
+        padding: 20px;
+        margin: 0 auto;
+        box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+    }
+
+    .question-block {
+        margin-bottom: 20px;
+        padding: 15px;
+        background: #f8f9fa;
+        border: 1px solid #e9ecef;
+        border-radius: 8px;
+    }
+
+    .question-text {
+        font-weight: bold;
+        margin-bottom: 10px;
+    }
+
+    .choice-label {
+        display: block;
+        margin: 5px 0;
+    }
+
+    .vote-button {
+        display: inline-block;
+        background-color: #1d475c;
+        color: white;
+        padding: 10px 20px;
+        border-radius: 5px;
+        border: none;
+        font-size: 16px;
+        cursor: not-allowed;
+        opacity: 0.6;
+        transition: background-color 0.3s ease, opacity 0.3s ease;
+    }
+
+    .vote-button.enabled {
+        cursor: pointer;
+        opacity: 1;
+    }
+
+    .vote-button.enabled:hover {
+        background-color: #0056b3;
+    }
+
+    .back-button {
+        margin-top: 15px;
+        display: inline-block;
+        background-color: #6c757d;
+        color: white;
+        padding: 8px 16px;
+        border-radius: 5px;
+        border: none;
+        font-size: 14px;
+        cursor: pointer;
+        transition: background-color 0.3s ease;
+    }
+
+    .back-button:hover {
+        background-color: #5a6268;
+    }
+</style>
+
+<script>
+    document.addEventListener("DOMContentLoaded", function() {
+        const voteButton = document.getElementById("vote-button");
+        const radios = document.querySelectorAll(".choice-radio");
+
+        radios.forEach(radio => {
+            radio.addEventListener("change", () => {
+                voteButton.disabled = false;
+                voteButton.classList.add("enabled");
+            });
+        });
+    });
+</script>
+{% endblock %}

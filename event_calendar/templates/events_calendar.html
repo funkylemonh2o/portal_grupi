@@ -3,16 +3,36 @@
 
 {% block content %}
 <style>
-    .page-content {
-        flex: 1;
-        padding: 40px 20px;
+    .board {
+        width: 90%;
+        margin: 1rem auto;
+        padding: 1rem;
+        background-color: white;
+        border-radius: 8px;
+        box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+        display: flex;
+        flex-wrap: wrap;
+        align-items: center;
+        gap: 15px;
     }
 
-    .page-content h1 {
+    .board-content {
+        display: flex;
+        flex-wrap: wrap;
+        align-items: center;
+        gap: 20px;
+    }
+
+    .board-content {
+        display: flex;
+        flex-wrap: wrap;
+        align-items: center;
+        gap: 20px;
+    }
+
+    .board-content h1 {
         text-align: center;
-        color: #1d475c;
-        margin-bottom: 40px;
-        font-size: 32px;
+        width: 100%;
     }
 
     .event-list {
@@ -93,35 +113,39 @@
 </style>
 
 <div class="page-content">
-    <h1>Майбутні події</h1>
-    <ul class="event-list">
-        {% for event in events %}
-            <li class="event-item">
-                <div class="event-text">
-                    <h2>{{ event.name }}</h2>
-                    <p><strong>Опис:</strong> {{ event.location }}</p>
-                    <p><strong>Дата:</strong> {{ event.date|date:"d.m.Y, H:i" }}</p>
+    <div class="board">
+        <div class="board-content">
+            <h1 style="color: #1d475c; text-align: center;">Майбутні події</h1>
+            <ul class="event-list">
+                {% for event in events %}
+                    <li class="event-item">
+                        <div class="event-text">
+                            <h2>{{ event.name }}</h2>
+                            <p><strong>Опис:</strong> {{ event.location }}</p>
+                            <p><strong>Дата:</strong> {{ event.date|date:"d.m.Y, H:i" }}</p>
 
-                    {% if user.is_staff %}
-                    <form method="post" action="{% url 'event_delete' event.pk %}" style="display:inline;">
-                        {% csrf_token %}
-                        <button type="submit" style="background:none; border:none; padding:0; color:#1d475c; cursor:pointer; font-size:14px;"
-                            onclick="return confirm('Ви впевнені, що хочете видалити цю подію?');">
-                            Видалити
-                        </button>
-                    </form>
-                    {% endif %}
-                </div>
+                            {% if user.is_staff %}
+                            <form method="post" action="{% url 'event_delete' event.pk %}" style="display:inline;">
+                                {% csrf_token %}
+                                <button type="submit" style="background:none; border:none; padding:0; color:#1d475c; cursor:pointer; font-size:14px;"
+                                    onclick="return confirm('Ви впевнені, що хочете видалити цю подію?');">
+                                    Видалити
+                                </button>
+                            </form>
+                            {% endif %}
+                        </div>
 
-                {% if event.image %}
-                <div class="event-image">
-                    <img src="{{ event.image.url }}" alt="Event image">
-                </div>
-                {% endif %}
-            </li>
-        {% empty %}
-            <li style="text-align:center;">Жодних подій немає.</li>
-        {% endfor %}
-    </ul>
+                        {% if event.image %}
+                        <div class="event-image">
+                            <img src="{{ event.image.url }}" alt="Event image">
+                        </div>
+                        {% endif %}
+                    </li>
+                {% empty %}
+                    <li style="text-align:center;">Жодних подій немає.</li>
+                {% endfor %}
+            </ul>
+        </div>
+    </div>
 </div>
 {% endblock %}

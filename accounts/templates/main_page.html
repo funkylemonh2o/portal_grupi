@@ -52,7 +52,6 @@
             align-items: center;
         }
 
-        /* Нові стилі для блоків оголошень та подій */
         .bottom-blocks {
             width: 100%;
             display: flex;
@@ -231,10 +230,10 @@
             text-align: center;
             font-weight: bold;
             font-size: 18px;
-            color: #333;
+            color: #1d475c;
             padding: 15px 0;
-            border-top: 3px solid #000;
-            margin-top: 10px;
+            border-bottom: 2px solid #1d475c;
+            margin-bottom: 10px;
         }
 
         @media (max-width: 768px) {
@@ -300,6 +299,11 @@
             </div>
 
             <div class="developers-section">
+
+                <div class="developers-title">
+                    Група розробників
+                </div>
+
                 <div class="developers-grid">
                     <div class="developer-card">
                         <div class="developer-photo">👤</div>
@@ -336,10 +340,6 @@
                         <a href="#" class="developer-link">Більше інформації</a>
                     </div>
                 </div>
-
-                <div class="developers-title">
-                    Група розробників
-                </div>
             </div>
 
 
@@ -349,7 +349,7 @@
                     <div class="block-title">Оголошення</div>
                     <div class="scrollable-content">
                         {% if announcements %}
-                            {% for announcement in announcements %}
+                            {% for announcement in announcements|slice:":5" %}
                                 <div class="content-item">
                                     <div class="item-title">{{ announcement.title }}</div>
                                     <div class="item-content">
@@ -371,13 +371,18 @@
                             </div>
                         {% endif %}
                     </div>
+                    <div style="text-align:center; margin-top:10px;">
+                        <a href="{% url 'announcement_list' %}" style="color:#1d475c; text-decoration:none; font-weight:bold;">
+                            Більше »
+                        </a>
+                    </div>
                 </div>
 
                 <div class="events-block">
-                    <div class="block-title">Події</div>
+                    <div class="block-title">Майбутні події</div>
                     <div class="scrollable-content">
                         {% if events %}
-                            {% for event in events %}
+                            {% for event in events|slice:":5" %}
                                 <div class="content-item">
                                     <div class="item-title">{{ event.name }}</div>
                                     <div class="item-content">
@@ -395,7 +400,13 @@
                             </div>
                         {% endif %}
                     </div>
+                    <div style="text-align:center; margin-top:10px;">
+                        <a href="{% url 'event_calendar' %}" style="color:#1d475c; text-decoration:none; font-weight:bold;">
+                            Більше »
+                        </a>
+                    </div>
                 </div>
+
             </div>
         </div>
     </div>

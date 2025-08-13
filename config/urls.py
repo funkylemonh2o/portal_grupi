@@ -20,6 +20,7 @@ from accounts.views import main_view
 from django.conf.urls.static import static
 from django.conf import settings
 from event_calendar.views import event_calendar_view
+from portfolio.views import PortfolioListView
 from polls.views import poll_list
 
 urlpatterns = [
@@ -28,5 +29,11 @@ urlpatterns = [
     path('accounts/', include('accounts.urls')),
     path('announcements/', include('announcements.urls')),
     path('event_calendar/', include('event_calendar.urls')),
-    path('polls/', include('polls.urls'))
+    path('polls/', include('polls.urls')),
+    path('portfolio/', include('portfolio.urls', namespace='portfolio')),
+    path('grades/', include('grades.urls')),
 ] + static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
+
+
+if settings.DEBUG:
+    urlpatterns += static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)

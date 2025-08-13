@@ -1,0 +1,33 @@
+<!DOCTYPE html>
+<html lang="uk">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Видалити Портфоліо</title>
+    <style>
+        body { font-family: Arial, sans-serif; margin: 20px; background-color: #f4f4f4; color: #333; }
+        .container { max-width: 600px; margin: auto; background: #fff; padding: 20px; border-radius: 8px; box-shadow: 0 2px 4px rgba(0,0,0,0.1); }
+        h1 { color: #dc3545; }
+        p { margin-bottom: 20px; }
+        .button-group { margin-top: 20px; }
+        .button-group button { background-color: #dc3545; color: white; padding: 10px 20px; border: none; border-radius: 5px; cursor: pointer; font-size: 1em; margin-right: 10px; }
+        .button-group button:hover { background-color: #c82333; }
+        .button-group a { background-color: #6c757d; color: white; padding: 10px 20px; border-radius: 5px; text-decoration: none; }
+        .button-group a:hover { background-color: #5a6268; }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>Видалити Портфоліо</h1>
+        <p>Ви впевнені, що хочете видалити портфоліо "<strong>{{ portfolio.title }}</strong>"?</p>
+
+        <form method="post">
+            {% csrf_token %}
+            <div class="button-group">
+                <button type="submit">Так, видалити</button>
+                <a href="{% url 'portfolio:portfolio_detail' portfolio.pk %}">Скасувати</a>
+            </div>
+        </form>
+    </div>
+</body>
+</html>

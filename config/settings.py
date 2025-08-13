@@ -43,7 +43,9 @@ INSTALLED_APPS = [
     'accounts',
     'announcements',
     'event_calendar',
-    'polls'
+    'polls',
+    'portfolio',
+    'grades',
 ]
 
 MIDDLEWARE = [
@@ -134,4 +136,4 @@ DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 AUTH_USER_MODEL = 'accounts.CustomUser'
 
 MEDIA_URL = "/media/"
-MEDIA_ROOT = os.path.join(BASE_DIR, "media")
+MEDIA_ROOT = os.path.join(BASE_DIR, 'media')

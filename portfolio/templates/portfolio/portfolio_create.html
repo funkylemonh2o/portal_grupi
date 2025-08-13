@@ -1,0 +1,159 @@
+{% extends 'base.html' %}
+
+{% block title %}
+    {% if form.instance.pk %}Редагувати Портфоліо{% else %}Створити Портфоліо{% endif %}
+{% endblock %}
+
+{% block content %}
+    <div class="container">
+        <h1>{% if form.instance.pk %}Редагувати Портфоліо{% else %}Створити Портфоліо{% endif %}</h1>
+
+        <form method="post" enctype="multipart/form-data">
+            {% csrf_token %}
+
+            <h2>Основна інформація</h2>
+            {% for field in form %}
+                <div class="form-row">
+                    <label for="{{ field.id_for_label }}">{{ field.label }}:</label>
+                    {{ field }}
+                    {% if field.help_text %}
+                        <small>{{ field.help_text }}</small>
+                    {% endif %}
+                    {% if field.errors %}
+                        <ul class="errorlist">
+                            {% for error in field.errors %}
+                                <li>{{ error }}</li>
+                            {% endfor %}
+                        </ul>
+                    {% endif %}
+                </div>
+            {% endfor %}
+
+            <h2>Медіафайли</h2>
+            {{ media_formset.management_form }}
+            <div id="media-formset-container">
+                {% for form in media_formset %}
+                    <div class="media-formset-item">
+                        {% if form.instance.pk %}<p>Поточний файл: <a href="{{ form.instance.file.url }}" target="_blank">{{ form.instance.file.name }}</a></p>{% endif %}
+                        {% for hidden_field in form.hidden_fields %}
+                            {{ hidden_field }}
+                        {% endfor %}
+                        <p>
+                            <label for="{{ form.file.id_for_label }}">Файл:</label>
+                            {{ form.file }}
+                            {% if form.file.errors %}
+                                <ul class="errorlist">
+                                    {% for error in form.file.errors %}
+                                        <li>{{ error }}</li>
+                                    {% endfor %}
+                                </ul>
+                            {% endif %}
+                        </p>
+                        {% if media_formset.can_delete %}
+                            <p>
+                                <label for="{{ form.DELETE.id_for_label }}">Видалити:</label>
+                                {{ form.DELETE }}
+                            </p>
+                        {% endif %}
+                    </div>
+                {% endfor %}
+            </div>
+            <button type="button" id="add-media-form" class="add-media-button">Додати ще медіа</button>
+
+            <div class="button-group">
+                <button type="submit" class="submit-button">Зберегти</button>
+                <a href="{% url 'portfolio:portfolio_list' %}" class="btn btn-secondary">Скасувати</a>
+            </div>
+        </form>
+    </div>
+
+    <style>
+        /* Specific styles for this page, if any are needed and not covered by base.html */
+        .form-row { margin-bottom: 15px; }
+        .form-row label { display: block; margin-bottom: 5px; font-weight: bold; }
+        .form-row input[type="text"],
+        .form-row input[type="url"],
+        .form-row textarea,
+        .form-row input[type="file"] {
+            width: calc(100% - 22px);
+            padding: 10px;
+            border: 1px solid #ddd;
+            border-radius: 4px;
+            box-sizing: border-box;
+        }
+        .form-row textarea { resize: vertical; min-height: 100px; }
+        .errorlist { color: #dc3545; list-style: none; padding: 0; margin-top: 5px; }
+        .errorlist li { margin-bottom: 5px; }
+        .media-formset-item { border: 1px solid #eee; padding: 10px; margin-bottom: 10px; border-radius: 5px; background-color: #fcfcfc; }
+        .add-media-button { background-color: #007bff; color: white; padding: 8px 12px; border: none; border-radius: 5px; cursor: pointer; font-size: 0.9em; margin-top: 10px; }
+        .add-media-button:hover { background-color: #0056b3; }
+        .submit-button {
+            background-color: #28a745; /* Green color for save button */
+            color: white;
+            padding: 10px 20px;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            font-size: 1em;
+            margin-right: 10px;
+        }
+        .submit-button:hover {
+            background-color: #218838;
+        }
+        .btn-secondary {
+            background-color: #6c757d;
+            color: white;
+            padding: 10px 20px;
+            border-radius: 5px;
+            text-decoration: none;
+        }
+        .btn-secondary:hover {
+            background-color: #5a6268;
+        }
+    </style>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            const addMediaButton = document.getElementById('add-media-form');
+            const mediaFormsetContainer = document.getElementById('media-formset-container');
+            const totalForms = document.querySelector('#id_media-TOTAL_FORMS');
+
+            addMediaButton.addEventListener('click', function() {
+                const currentForms = mediaFormsetContainer.children.length;
+                const newForm = mediaFormsetContainer.children[0].cloneNode(true);
+
+                // Clear input values and update IDs/names for the new form
+                newForm.querySelectorAll('input, textarea').forEach(input => {
+                    if (input.type !== 'hidden' && input.type !== 'checkbox') {
+                        input.value = '';
+                    }
+                    input.id = input.id.replace(/-\d+-/, `-${currentForms}-`);
+                    input.name = input.name.replace(/-\d+-/, `-${currentForms}-`);
+                });
+
+                // Update label 'for' attributes
+                newForm.querySelectorAll('label').forEach(label => {
+                    if (label.htmlFor) {
+                        label.htmlFor = label.htmlFor.replace(/-\d+-/, `-${currentForms}-`);
+                    }
+                });
+
+                // Clear current file info if it exists
+                const currentFileP = newForm.querySelector('p:has(a[target="_blank"])');
+                if (currentFileP) {
+                    currentFileP.remove();
+                }
+
+                // Uncheck delete checkbox for new form
+                const deleteCheckbox = newForm.querySelector('input[type="checkbox"][id$="-DELETE"]');
+                if (deleteCheckbox) {
+                    deleteCheckbox.checked = false;
+                }
+
+                mediaFormsetContainer.appendChild(newForm);
+                totalForms.value = parseInt(totalForms.value) + 1;
+            });
+        });
+    </script>
+{% endblock %}
+

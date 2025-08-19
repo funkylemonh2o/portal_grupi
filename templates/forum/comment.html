@@ -1,0 +1,30 @@
+{% include "base_head.html" %}
+
+<div class="page-content" style="max-width: 800px; margin: auto;">
+    <h2>{{ post.title }}</h2>
+    <p><strong>By:</strong> {{ post.author }}</p>
+    <p>{{ post.content }}</p>
+    <hr>
+
+    <h3>Comments</h3>
+    {% for comment in comments %}
+        <div style="background: #f7f7f7; padding: 10px; border-radius: 5px; margin-bottom: 10px;">
+            <p><strong>{{ comment.author }}</strong> - {{ comment.created_at|date:"M d, Y H:i" }}</p>
+            <p>{{ comment.content }}</p>
+        </div>
+    {% empty %}
+        <p>No comments yet. Be the first to comment!</p>
+    {% endfor %}
+
+    <hr>
+    <h3>Leave a Comment</h3>
+    <form method="post">
+        {% csrf_token %}
+        {{ form.as_p }}
+        <button type="submit" style="background: #1d475c; color: white; border: none; padding: 8px 14px; border-radius: 5px;">
+            Submit
+        </button>
+    </form>
+
+    <p style="margin-top: 15px;"><a href="{% url 'forum' %}">⬅ Back to Forum</a></p>
+</div>

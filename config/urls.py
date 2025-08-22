@@ -20,6 +20,7 @@ from accounts.views import main_view
 from django.conf.urls.static import static
 from django.conf import settings
 from event_calendar.views import event_calendar_view
+from forum.views import forum_view, like_post, comment
 
 urlpatterns = [
     path('admin/', admin.site.urls),
@@ -27,4 +28,9 @@ urlpatterns = [
     path('accounts/', include('accounts.urls')),
     path('announcements/', include('announcements.urls')),
     path('event_calendar/', event_calendar_view, name='event_calendar'),
+    path('forum/', forum_view, name='forum'),
+    path('forum/like/<int:post_id>/', like_post, name='like_post'),
+    path('forum/comment/<int:post_id>/', comment, name='comment'),
+
+
 ] + static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)

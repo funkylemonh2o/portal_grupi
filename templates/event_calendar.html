@@ -116,28 +116,8 @@
     }
 </style>
 <body>
+{% include 'base_head.html' %}
 
-<div class="page-content">
-    <h1 style="text-align:center; margin-top: 2rem;">Upcoming Events</h1>
-    <ul class="event-list">
-        {% for event in events %}
-            <li class="event-item">
-                <div class="event-text">
-                    <h2>{{ event.name }}</h2>
-                    <p><strong>Location:</strong> {{ event.location }}</p>
-                    <p><strong>Date:</strong> {{ event.date|date:"F j, Y, H:i" }}</p>
-                </div>
-                {% if event.image_url %}
-                <div class="event-image">
-                    <img src="{{ event.image_url }}" alt="Event image">
-                </div>
-                {% endif %}
-            </li>
-        {% empty %}
-            <li>No events available.</li>
-        {% endfor %}
-    </ul>
-</div>
 
 <footer>
     <div class="footer-container">
@@ -151,6 +131,127 @@
     </div>
     <div class="footer-bottom">© 2025 Event Calendar. All rights reserved.</div>
 </footer>
+<script>
+    const events = JSON.parse('{{ events_json|safe }}'); // List of {name, date}
+
+    let currentDate = new Date();
+
+    const createCalendar = (year, month) => {
+        const calendarContainer = document.getElementById('calendar-container');
+        calendarContainer.innerHTML = ''; // Clear previous calendar
+
+        const table = document.createElement('table');
+        table.style.margin = "1rem auto";
+        table.style.borderCollapse = "collapse";
+        table.style.width = "90%";
+        table.style.maxWidth = "800px";
+        table.style.backgroundColor = "#fff";
+        table.style.boxShadow = "0 2px 6px rgba(0,0,0,0.1)";
+        table.style.borderRadius = "8px";
+        table.style.overflow = "hidden";
+        table.style.fontSize = "14px";
+
+        const daysOfWeek = ['Sun', 'Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat'];
+        const headerRow = document.createElement('tr');
+        daysOfWeek.forEach(day => {
+            const th = document.createElement('th');
+            th.textContent = day;
+            th.style.padding = "0.5rem";
+            th.style.background = "#1d475c";
+            th.style.color = "white";
+            th.style.textAlign = "center";
+            headerRow.appendChild(th);
+        });
+        table.appendChild(headerRow);
+
+        const firstDay = new Date(year, month, 1).getDay();
+        const daysInMonth = new Date(year, month + 1, 0).getDate();
+
+        let date = 1;
+        for (let i = 0; i < 6; i++) {
+            const row = document.createElement('tr');
+            for (let j = 0; j < 7; j++) {
+                const cell = document.createElement('td');
+                cell.style.border = "1px solid #ddd";
+                cell.style.height = "100px";
+                cell.style.verticalAlign = "top";
+                cell.style.padding = "0.5rem";
+                cell.style.backgroundColor = "#f9faff";
+
+                if (i === 0 && j < firstDay) {
+                    cell.innerHTML = "";
+                } else if (date > daysInMonth) {
+                    break;
+                } else {
+                    const cellDate = new Date(year, month, date);
+                    const formatted = cellDate.toISOString().split('T')[0];
+
+                    const matchingEvents = events.filter(ev => ev.date.startsWith(formatted));
+
+                    cell.innerHTML = `<strong>${date}</strong>`;
+                    matchingEvents.forEach(ev => {
+                        const p = document.createElement('p');
+                        p.textContent = ev.name;
+                        p.style.margin = "4px 0";
+                        p.style.fontSize = "12px";
+                        p.style.backgroundColor = "#ddeeff";
+                        p.style.padding = "2px 4px";
+                        p.style.borderRadius = "4px";
+                        cell.appendChild(p);
+                    });
+                    date++;
+                }
+                row.appendChild(cell);
+            }
+            table.appendChild(row);
+        }
+
+        const title = document.getElementById('calendar-title');
+        title.textContent = `${new Date(year, month).toLocaleString('default', { month: 'long' })} ${year}`;
+
+        calendarContainer.appendChild(table);
+    };
+
+    const changeMonth = (delta) => {
+        currentDate.setMonth(currentDate.getMonth() + delta);
+        createCalendar(currentDate.getFullYear(), currentDate.getMonth());
+    };
+
+    document.addEventListener('DOMContentLoaded', () => {
+        const nav = document.createElement('div');
+        nav.style.textAlign = 'center';
+        nav.style.marginTop = '2rem';
+
+        const prevBtn = document.createElement('button');
+        prevBtn.textContent = '← Previous';
+        prevBtn.onclick = () => changeMonth(-1);
+        prevBtn.style.margin = '0 1rem';
+
+        const nextBtn = document.createElement('button');
+        nextBtn.textContent = 'Next →';
+        nextBtn.onclick = () => changeMonth(1);
+        nextBtn.style.margin = '0 1rem';
+
+        const title = document.createElement('h2');
+        title.id = 'calendar-title';
+        title.style.textAlign = 'center';
+        title.style.marginBottom = '1rem';
+
+        const calendarWrapper = document.createElement('div');
+        calendarWrapper.id = 'calendar-container';
+
+        document.body.insertBefore(title, document.querySelector('footer'));
+        document.body.insertBefore(nav, document.querySelector('footer'));
+        nav.appendChild(prevBtn);
+        nav.appendChild(nextBtn);
+        document.body.insertBefore(calendarWrapper, document.querySelector('footer'));
+
+        createCalendar(currentDate.getFullYear(), currentDate.getMonth());
+    });
+</script>
+
+
 
 </body>
+
 </html>

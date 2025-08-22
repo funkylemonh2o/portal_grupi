@@ -1,0 +1,80 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block content %}
+<div class="page-content">
+    <div class="board">
+        <div class="polls-block">
+            <h2 class="block-title">Результати: {{ poll.title }}</h2>
+            {% for question in poll.questions.all %}
+                <div class="question-block">
+                    <p class="question-text">{{ question.text }}</p>
+                    {% for choice in question.choices.all %}
+                        <p class="result-item">
+                            <span class="choice-text">{{ choice.text }}</span> 
+                            — <span class="vote-count">{{ choice.vote_set.count }}</span> голосів
+                        </p>
+                    {% endfor %}
+                </div>
+            {% endfor %}
+            <button class="back-button" onclick="history.back()">⬅ Назад</button>
+        </div>
+    </div>
+</div>
+
+<style>
+    .polls-block {
+        width: 70%;
+        background: white;
+        border: 2px solid #ddd;
+        border-radius: 10px;
+        padding: 20px;
+        margin: 0 auto;
+        box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+    }
+
+    .question-block {
+        margin-bottom: 20px;
+        padding: 15px;
+        background: #f8f9fa;
+        border: 1px solid #e9ecef;
+        border-radius: 8px;
+    }
+
+    .question-text {
+        font-weight: bold;
+        margin-bottom: 10px;
+    }
+
+    .result-item {
+        margin: 5px 0;
+        font-size: 14px;
+    }
+
+    .choice-text {
+        font-weight: bold;
+        color: #1d475c;
+    }
+
+    .vote-count {
+        color: #555;
+    }
+
+    .back-button {
+        margin-top: 15px;
+        display: inline-block;
+        background-color: #6c757d;
+        color: white;
+        padding: 8px 16px;
+        border-radius: 5px;
+        border: none;
+        font-size: 14px;
+        cursor: pointer;
+        transition: background-color 0.3s ease;
+    }
+
+    .back-button:hover {
+        background-color: #5a6268;
+    }
+</style>
+{% endblock %}

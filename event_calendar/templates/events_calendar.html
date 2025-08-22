@@ -1,0 +1,151 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block content %}
+<style>
+    .board {
+        width: 90%;
+        margin: 1rem auto;
+        padding: 1rem;
+        background-color: white;
+        border-radius: 8px;
+        box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+        display: flex;
+        flex-wrap: wrap;
+        align-items: center;
+        gap: 15px;
+    }
+
+    .board-content {
+        display: flex;
+        flex-wrap: wrap;
+        align-items: center;
+        gap: 20px;
+    }
+
+    .board-content {
+        display: flex;
+        flex-wrap: wrap;
+        align-items: center;
+        gap: 20px;
+    }
+
+    .board-content h1 {
+        text-align: center;
+        width: 100%;
+    }
+
+    .event-list {
+        list-style: none;
+        padding: 0;
+        margin: 0 auto;
+        max-width: 1000px;
+        display: flex;
+        flex-direction: column;
+        gap: 20px;
+    }
+
+    .event-item {
+        display: flex;
+        flex-direction: row;
+        justify-content: space-between;
+        align-items: center;
+        background-color: white;
+        padding: 20px;
+        border-radius: 10px;
+        box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+        gap: 20px;
+        flex-wrap: wrap;
+        position: relative;
+    }
+
+    .event-text {
+        flex: 1;
+        min-width: 250px;
+    }
+
+    .event-text h2 {
+        margin: 0 0 10px;
+        font-size: 22px;
+        color: #1d475c;
+    }
+
+    .event-text p {
+        margin: 5px 0;
+        font-size: 16px;
+        color: #333;
+    }
+
+    .event-image img {
+        width: 200px;
+        height: auto;
+        border-radius: 8px;
+        object-fit: cover;
+        border: 2px solid #ddd;
+    }
+
+    .event-actions {
+        margin-top: 10px;
+    }
+
+    .event-actions a {
+        font-size: 14px;
+        color: #0056b3;
+        margin-right: 10px;
+        text-decoration: none;
+    }
+
+    .event-actions a:hover {
+        text-decoration: underline;
+    }
+
+    @media (max-width: 768px) {
+        .event-item {
+            flex-direction: column;
+            align-items: flex-start;
+        }
+
+        .event-image img {
+            width: 100%;
+            height: auto;
+        }
+    }
+</style>
+
+<div class="page-content">
+    <div class="board">
+        <div class="board-content">
+            <h1 style="color: #1d475c; text-align: center;">Майбутні події</h1>
+            <ul class="event-list">
+                {% for event in events %}
+                    <li class="event-item">
+                        <div class="event-text">
+                            <h2>{{ event.name }}</h2>
+                            <p><strong>Опис:</strong> {{ event.location }}</p>
+                            <p><strong>Дата:</strong> {{ event.date|date:"d.m.Y, H:i" }}</p>
+
+                            {% if user.is_staff %}
+                            <form method="post" action="{% url 'event_delete' event.pk %}" style="display:inline;">
+                                {% csrf_token %}
+                                <button type="submit" style="background:none; border:none; padding:0; color:#1d475c; cursor:pointer; font-size:14px;"
+                                    onclick="return confirm('Ви впевнені, що хочете видалити цю подію?');">
+                                    Видалити
+                                </button>
+                            </form>
+                            {% endif %}
+                        </div>
+
+                        {% if event.image %}
+                        <div class="event-image">
+                            <img src="{{ event.image.url }}" alt="Event image">
+                        </div>
+                        {% endif %}
+                    </li>
+                {% empty %}
+                    <li style="text-align:center;">Жодних подій немає.</li>
+                {% endfor %}
+            </ul>
+        </div>
+    </div>
+</div>
+{% endblock %}

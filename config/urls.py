@@ -19,7 +19,6 @@ from django.urls import path, include
 from accounts.views import main_view
 from django.conf.urls.static import static
 from django.conf import settings
-from event_calendar.views import event_calendar_view
 from forum.views import forum_view, like_post, comment
 
 urlpatterns = [
@@ -27,10 +26,16 @@ urlpatterns = [
     path('', main_view, name='main_page'),
     path('accounts/', include('accounts.urls')),
     path('announcements/', include('announcements.urls')),
-    path('event_calendar/', event_calendar_view, name='event_calendar'),
+    path('event_calendar/', include('event_calendar.urls')),
+    path('polls/', include('polls.urls')),
+    path('portfolio/', include('portfolio.urls', namespace='portfolio')),
+    path('grades/', include('grades.urls')),
     path('forum/', forum_view, name='forum'),
     path('forum/like/<int:post_id>/', like_post, name='like_post'),
     path('forum/comment/<int:post_id>/', comment, name='comment'),
 
 
-] + static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
+]
+
+if settings.DEBUG:
+    urlpatterns += static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)

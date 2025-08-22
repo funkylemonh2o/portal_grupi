@@ -44,6 +44,9 @@ INSTALLED_APPS = [
     'announcements',
     'event_calendar',
     'forum',
+    'polls',
+    'portfolio',
+    'grades',
 ]
 
 MIDDLEWARE = [
@@ -115,7 +118,7 @@ TIME_ZONE = 'UTC'
 
 USE_I18N = True
 
-USE_TZ = True
+USE_TZ = False
 
 
 # Static files (CSS, JavaScript, Images)
@@ -133,5 +136,5 @@ DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 
 AUTH_USER_MODEL = 'accounts.CustomUser'
 
-MEDIA_URL = "/madia/"
-MEDIA_ROOT = os.path.join(BASE_DIR, "media")
+MEDIA_URL = "/media/"
+MEDIA_ROOT = os.path.join(BASE_DIR, 'media')

@@ -191,10 +191,11 @@
             <div class="dropdown-content">
                 <a href="{% url 'forum' %}">Форум</a>
                 <a href="#">Електронний щоденник</a>
+                <a href="{% url 'grades:all_grades' %}">Оцінки учнів</a>
                 <a href="{% url 'event_calendar' %}">Календар подій</a>
                 <a href="#">Галерея</a>
-                <a href="#">Портфоліо</a>
-                <a href="#">Опитування</a>
+                <a href="{% url 'portfolio:portfolio_list' %}">Портфоліо</a>
+                <a href="{% url 'poll_list' %}">Опитування</a>
                 <a href="{% url 'announcement_list' %}">Оголошення</a>
             </div>
         </div>
@@ -203,7 +204,7 @@
                 <a href="{% url 'main_page' %}">На головну</a>
                 <button onclick="toggleTheme()" class="dropbtnm">Змінити тему</button>
                 <a href="{% url 'profile' %}">Профіль</a>
-                <a href="{% url 'logout' %}">Вийти</a>
+                <a href="{% url 'logout'%}" onclick="return confirm('Ви впевнені, що хочете вийти?');">Вийти</a>
             </div>
         {% else %}
             <div class="nav-links">

@@ -2,9 +2,16 @@ from django.shortcuts import render, redirect
 from django.contrib.auth import login, logout
 from django.contrib.auth.decorators import login_required
 from .forms import RegisterForm, LoginForm, EditProfileForm
+from announcements.models import Announcement
+from event_calendar.models import Event
 
 def main_view(request):
-    return render(request, 'main_page.html')
+    announcements = Announcement.objects.all().order_by('-created_at')[:5]
+    events = Event.objects.all().order_by('date')[:5]
+    return render(request, 'main_page.html', {
+        'announcements': announcements,
+        'events': events
+    })
 
 def register_view(request):
     if request.method == 'POST':
